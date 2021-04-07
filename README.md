@@ -5,7 +5,8 @@ I developed this application by reverse engineering the wifi protocol, using Wir
 Trust me, I'm a reverse engineer, I guess?
 After reverse engineering the protocol, I made two python programs, one would stream the camera to the pc, the other one would connect to an XBOX controller and compose messages to send to the drone doing checksums and some crazy math, all in real time.
 
-Video of the software working: https://www.youtube.com/watch?v=_I7nl1MVMT8
+Video of my software working: https://www.youtube.com/watch?v=_I7nl1MVMT8
+Random Youtube video showing the drone and Android app are: https://www.youtube.com/watch?v=sy-Ts9UX2gE&ab_channel=JDQuad
 
 How to use: Run the watch_video_fluid.sh in an Ubuntu shell. This will open a window with the camera stream and run the shell program for sending controller commands.
 This will most likely work. I don't have the drone anymore so I can't test which files were the right ones. If it doesn't, just run the two python lines inside the sh file separately and it should work.
