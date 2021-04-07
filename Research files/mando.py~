@@ -1,0 +1,98 @@
+import socket
+import pygame
+import time
+from math import floor
+import binascii
+
+def add(a, b):
+    c = bin(int(a,2) + int(b,2))
+    return (c)
+
+def checksum(msg):
+    s = "0"
+    for i in range(0, len(msg), 2):
+        w = bin(int(msg[i] + msg[i+1], 16))[2:].zfill(8)#ord(msg[i]) + (ord(msg[i+1]) << 8)
+	#print w
+        s = add(s, w)
+    return s#bin(~int(s,2)) #& 0xff
+
+def twos_comp(val, bits):
+    """compute the 2's complement of int value val"""
+    print val
+    print bits
+    if (val & (1 << (bits - 1))) != 0: # if sign bit is set e.g., 8bit: 128-255
+        val = val - (1 << bits)        # compute negative value
+    else:
+	val = (1 << bits) - val
+    return val  
+
+
+def get():
+    #pygame gives the analogue joystick position as a float that goes from -1 to 1, the code below takes the readings and
+    #scales them so that they fit in the 0-255 range the quadcopter expects
+    a=int(floor((j.get_axis(0)+1)*63))
+    a1='{0:02x}'.format(a)
+    b=int(floor((j.get_axis(1)-1)*-126))
+    b1='{0:02x}'.format(b)
+    c=int(floor((j.get_axis(3)+1)*63))
+    c1='{0:02x}'.format(c)
+    d=int(floor((j.get_axis(4)-1)*-63))
+    d1='{0:02x}'.format(d)
+    cm1=144
+    cm2=16
+    cm3=64
+    commands1="90101000"
+    message="ff08"+b1+a1+c1+d1+commands1;
+    chsum=checksum("ff08c230403f90101002")
+		   #ff08a631403f90101000f1
+#    chsum=checksum("ff08"+b1+a1+c1+d1+"90101002")
+    
+    #print chsum
+    l0= len(chsum)
+    print chsum
+    chsum = chsum[l0-8:]	#recorta solo los 8 ultimos caracteres de la suma de comprobacion por si >8
+    print (chsum)
+    chsum1 = twos_comp(int(chsum,2), len(chsum))
+    print chsum1
+    print bin(chsum1)
+    print hex(chsum1) #binascii.a2b_hex(chsum1) & 0xff
+    chsum2=hex(chsum1).lstrip("0x").lstrip("-0x")	#lstrip busca y quita la cadena citada
+    print chsum2
+
+    #l1= len(chsum2)
+    #chsum2 = chsum2[l1-2:]
+
+    if(len(chsum2)!=2):
+	chsum2="0"+chsum2
+	print len(chsum2)
+    pygame.event.pump()
+    print (message)+(chsum2)
+    
+    return message
+
+
+pygame.init()
+j = pygame.joystick.Joystick(0)
+j.init()
+
+
+while 1:
+    get()
+    time.sleep(0.2)
+    if (j.get_button(0)==1):
+    	print "estas pulsando a"
+    if (j.get_button(1)==1):
+    	print "estas pulsando b"
+    if (j.get_button(2)==1):
+    	print "estas pulsando x"
+    if (j.get_button(3)==1):
+    	print "estas pulsando y"
+    if (j.get_button(4)==1):
+    	print "estas pulsando L1"
+    if (j.get_button(5)==1):
+    	print "estas pulsando R1"
+    if (j.get_button(6)==1):
+    	print "estas pulsando 6"
+#neutral 		ff087e3f403f90101040cb
+#3f//7e			    ________        __
+#			    h g	a b	   suma

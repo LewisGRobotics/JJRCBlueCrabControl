@@ -1,0 +1,40 @@
+import binascii
+
+def add(a, b):
+    c = bin(int(a,2) + int(b,2))
+    return (c)
+
+def checksum(msg):
+    s = "0"
+    for i in range(0, len(msg), 2):
+        w = bin(int(msg[i] + msg[i+1], 16))[2:].zfill(8)#ord(msg[i]) + (ord(msg[i+1]) << 8)
+	print w
+        s = add(s, w)
+    return s#bin(~int(s,2)) #& 0xff
+
+def twos_comp(val, bits):
+    """compute the 2's complement of int value val"""
+    if (val & (1 << (bits - 1))) != 0: # if sign bit is set e.g., 8bit: 128-255
+        val = val - (1 << bits)        # compute negative value
+    return val  
+
+message="ff087e3f403f90101040"
+chsum=checksum(message)
+print chsum
+chsum = chsum[3:]
+print chsum
+chsum1 = twos_comp(int(chsum,2), len(chsum))
+print chsum1
+print bin(chsum1)
+print hex(chsum1) #binascii.a2b_hex(chsum1) & 0xff
+
+
+
+
+
+#print hex((int(chsum1,16) & 0xff))
+#bin(int(msg[i] + msg[i+1], 16))[2:].zfill(8)
+#hex(int('0000010010001101', 2))
+
+
+
