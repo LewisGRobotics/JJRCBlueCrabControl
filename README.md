@@ -12,5 +12,6 @@ Random Youtube video showing the drone and Android app are: https://www.youtube.
 How to use: Run the watch_video_fluid.sh in an Ubuntu shell. This will open a window with the camera stream and run the shell program for sending controller commands.
 This will most likely work. I don't have the drone anymore so I can't test which files were the right ones. If it doesn't, just run the two python lines inside the sh file separately and it should work.
 
-Important note!!: This is a very old software project of mine, which I did before being a software developer professionally. This means the code may not be as easy to understand, even though I tried to translate the comments to english in the main files
+Important note!!: This is a very old software project of mine, which I did before being a software developer professionally. This means the code may not be as easy to understand, even though I tried to translate the comments to english in the main files.
+
 I added my research files as well, including messing with the libraries for real time, camera stream, the xbox controller library and some wireshark package captures I used to reverse engineer the protocol.
